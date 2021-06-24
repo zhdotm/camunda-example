@@ -9,8 +9,7 @@ public class TaskDeleteListener implements TaskListener {
         System.out.println("Delete监听器");
         delegateTask.getVariables().forEach((s, o) -> {
             System.out.println("===key: " + s);
-            System.out.println("===value: " + 0);
+            System.out.println("===value: " + o);
         });
-        delegateTask.complete();
     }
 }

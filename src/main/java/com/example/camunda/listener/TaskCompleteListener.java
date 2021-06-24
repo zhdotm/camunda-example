@@ -9,8 +9,8 @@ public class TaskCompleteListener implements TaskListener {
         System.out.println("Complete监听器");
         delegateTask.getVariables().forEach((s, o) -> {
             System.out.println("===key: " + s);
-            System.out.println("===value: " + 0);
+            System.out.println("===value: " + o);
         });
-        delegateTask.complete();
+
     }
 }

@@ -30,6 +30,9 @@
       <bpmn:outgoing>Flow_1x5rgpk</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:endEvent id="Event_0gxxohv">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="com.example.camunda.listener.EndEventEndListener" event="end" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1x5rgpk</bpmn:incoming>
       <bpmn:incoming>Flow_0u8nbiq</bpmn:incoming>
     </bpmn:endEvent>
@@ -51,15 +54,15 @@
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0x4sbhc">
-      <bpmndi:BPMNEdge id="Flow_1x5rgpk_di" bpmnElement="Flow_1x5rgpk">
-        <di:waypoint x="500" y="310" />
-        <di:waypoint x="556" y="310" />
-        <di:waypoint x="556" y="220" />
-        <di:waypoint x="612" y="220" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0u8nbiq_di" bpmnElement="Flow_0u8nbiq">
         <di:waypoint x="500" y="120" />
         <di:waypoint x="556" y="120" />
+        <di:waypoint x="556" y="220" />
+        <di:waypoint x="612" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1x5rgpk_di" bpmnElement="Flow_1x5rgpk">
+        <di:waypoint x="500" y="310" />
+        <di:waypoint x="556" y="310" />
         <di:waypoint x="556" y="220" />
         <di:waypoint x="612" y="220" />
       </bpmndi:BPMNEdge>
@@ -95,14 +98,14 @@
           <dc:Bounds x="356" y="190" width="29" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0qsujiz_di" bpmnElement="Activity_17uj5n1">
-        <dc:Bounds x="400" y="80" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1gxndmu_di" bpmnElement="Activity_13k6zri">
         <dc:Bounds x="400" y="270" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0gxxohv_di" bpmnElement="Event_0gxxohv">
         <dc:Bounds x="612" y="202" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0qsujiz_di" bpmnElement="Activity_17uj5n1">
+        <dc:Bounds x="400" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

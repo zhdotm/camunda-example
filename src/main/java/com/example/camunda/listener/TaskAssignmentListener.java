@@ -15,7 +15,6 @@ public class TaskAssignmentListener implements TaskListener {
             System.out.println("===key: " + s);
             System.out.println("===value: " + 0);
         });
-        delegateTask.complete();
     }
 
 }

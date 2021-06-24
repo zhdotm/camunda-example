@@ -38,8 +38,8 @@ class CamundaExampleApplicationTests {
 	@Test
 	@SneakyThrows
 	public void deploy() {
-		String fileAbstractPath = System.getProperty("user.dir") + "/camunda/demo.bpmn";
-		repositoryService.createDeployment().addInputStream("demo.bpmn", new FileInputStream(fileAbstractPath)).deploy();
+		String fileAbstractPath = System.getProperty("user.dir") + "/camunda/receive_task_demo.bpmn";
+		repositoryService.createDeployment().addInputStream("receive_task_demo.bpmn", new FileInputStream(fileAbstractPath)).deploy();
 		List<Deployment> deploymentList = repositoryService.createDeploymentQuery().list();
 		for (Deployment deployment : deploymentList) {
 			System.out.println("部署id: " + deployment.getId());
@@ -62,6 +62,14 @@ class CamundaExampleApplicationTests {
 	}
 
 	@Test
+	public void startReceiveMessageProcess(){
+		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().active().latestVersion().processDefinitionName("接受任务案例").singleResult();
+		ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefinition.getId(), new HashMap<String, Object>() {{
+			put("name", "zhangsan");
+		}});
+	}
+
+	@Test
 	public void task(){
 		List<ProcessDefinition> processDefinitionList = repositoryService.createProcessDefinitionQuery().list();
 		for (ProcessDefinition processDefinition : processDefinitionList) {
@@ -75,6 +83,20 @@ class CamundaExampleApplicationTests {
 				taskService.complete(task.getId());
 			}
 
+		}
+	}
+
+	@Test
+	public void deleteProcessInstance(){
+		for (ProcessInstance processInstance : runtimeService.createProcessInstanceQuery().list()) {
+			runtimeService.deleteProcessInstance(processInstance.getId(),"删除理由");
+		}
+	}
+
+	@Test
+	public void receiveMessageTask(){
+		for (Task task : taskService.createTaskQuery().active().list()) {
+			runtimeService.signal(task.getExecutionId());
 		}
 	}
 

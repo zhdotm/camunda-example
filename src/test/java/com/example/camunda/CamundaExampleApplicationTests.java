@@ -42,8 +42,8 @@ class CamundaExampleApplicationTests {
     @Test
     @SneakyThrows
     public void deploy() {
-        String fileAbstractPath = System.getProperty("user.dir") + "/camunda/service_task_demo.bpmn";
-        repositoryService.createDeployment().addInputStream("service_task_demo.bpmn", new FileInputStream(fileAbstractPath)).tenantId("tenant:id:11111111").deploy();
+        String fileAbstractPath = System.getProperty("user.dir") + "/camunda/send_receive_demo.bpmn";
+        repositoryService.createDeployment().addInputStream("send_receive_demo.bpmn", new FileInputStream(fileAbstractPath)).tenantId("tenant:id:11111111").deploy();
         List<Deployment> deploymentList = repositoryService.createDeploymentQuery().list();
         for (Deployment deployment : deploymentList) {
             System.out.println("部署id: " + deployment.getId());
@@ -66,6 +66,20 @@ class CamundaExampleApplicationTests {
     }
 
     @Test
+    public void startProcessByKey() {
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().active().latestVersion().processDefinitionKey("Process_05mr1a9").singleResult();
+        ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefinition.getId(), new HashMap<String, Object>() {{
+            put("param1", "value1");
+        }});
+    }
+
+    @Test
+    public void sendMessage() {
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().active().processDefinitionKey("Process_05mr1a9").singleResult();
+        runtimeService.createMessageCorrelation("message").setVariable("param2", "value2").correlate();
+    }
+
+    @Test
     public void startReceiveMessageProcess() {
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().active().latestVersion().processDefinitionName("接受任务案例").singleResult();
         ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefinition.getId(), new HashMap<String, Object>() {{
@@ -74,7 +88,7 @@ class CamundaExampleApplicationTests {
     }
 
     @Test
-    public void queryProcessDefinition(){
+    public void queryProcessDefinition() {
         List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().tenantIdIn("tenant:id:11111111").list();
         for (ProcessDefinition processDefinition : list) {
             System.out.println("id: " + processDefinition.getId());
@@ -96,7 +110,7 @@ class CamundaExampleApplicationTests {
                 //用于给网关判断是给谁的服务任务
                 put("userName", "zhangsan");
                 //给张三的一些参数
-                put("message","回家吃饭");
+                put("message", "回家吃饭");
             }});
 
         }
@@ -131,6 +145,11 @@ class CamundaExampleApplicationTests {
         for (Task task : taskService.createTaskQuery().active().list()) {
             runtimeService.signal(task.getExecutionId());
         }
+    }
+
+    @Test
+    public void doReceiveMessage() {
+
     }
 
 }

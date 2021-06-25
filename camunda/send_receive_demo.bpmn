@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0gtm96l" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.8.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="Process_05mr1a9" name="发送接收任务" isExecutable="true">
+    <bpmn:sequenceFlow id="Flow_1ugxetc" sourceRef="StartEvent_1" targetRef="Activity_0or6sod" />
+    <bpmn:sendTask id="Activity_0or6sod" name="发送消息" camunda:class="com.example.camunda.task.SendMessageTask">
+      <bpmn:documentation>发送开始消息</bpmn:documentation>
+      <bpmn:incoming>Flow_1ugxetc</bpmn:incoming>
+      <bpmn:outgoing>Flow_02em9xd</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:exclusiveGateway id="Gateway_0bme7gd">
+      <bpmn:incoming>Flow_02em9xd</bpmn:incoming>
+      <bpmn:outgoing>Flow_03qab8e</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1ju21bm</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_02em9xd" sourceRef="Activity_0or6sod" targetRef="Gateway_0bme7gd">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_1rxnjl6">
+      <bpmn:incoming>Flow_03qab8e</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_03qab8e" name="消息为空" sourceRef="Gateway_0bme7gd" targetRef="Event_1rxnjl6">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${message == null || message == ''}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1ju21bm" name="消息不为空" sourceRef="Gateway_0bme7gd" targetRef="Activity_1pno11b">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${message != null &amp;&amp; message != ''}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:receiveTask id="Activity_1pno11b" name="接收消息" messageRef="Message_17vc8q5">
+      <bpmn:incoming>Flow_1ju21bm</bpmn:incoming>
+    </bpmn:receiveTask>
+    <bpmn:startEvent id="StartEvent_1" name="开始事件">
+      <bpmn:outgoing>Flow_1ugxetc</bpmn:outgoing>
+    </bpmn:startEvent>
+  </bpmn:process>
+  <bpmn:message id="Message_17vc8q5" name="message" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_05mr1a9">
+      <bpmndi:BPMNEdge id="Flow_1ugxetc_di" bpmnElement="Flow_1ugxetc">
+        <di:waypoint x="215" y="190" />
+        <di:waypoint x="320" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02em9xd_di" bpmnElement="Flow_02em9xd">
+        <di:waypoint x="420" y="190" />
+        <di:waypoint x="505" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03qab8e_di" bpmnElement="Flow_03qab8e">
+        <di:waypoint x="530" y="165" />
+        <di:waypoint x="530" y="98" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="523" y="129" width="44" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ju21bm_di" bpmnElement="Flow_1ju21bm">
+        <di:waypoint x="530" y="215" />
+        <di:waypoint x="530" y="270" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="518" y="240" width="55" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1ykxfku_di" bpmnElement="Activity_0or6sod">
+        <dc:Bounds x="320" y="150" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0bme7gd_di" bpmnElement="Gateway_0bme7gd" isMarkerVisible="true">
+        <dc:Bounds x="505" y="165" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1rxnjl6_di" bpmnElement="Event_1rxnjl6">
+        <dc:Bounds x="512" y="62" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0kxmcl2_di" bpmnElement="Activity_1pno11b">
+        <dc:Bounds x="480" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_13yuret_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="172" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="176" y="215" width="44" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
